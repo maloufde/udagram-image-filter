@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf www/ || true",
     "build": "npm run clean && tsc && cp package.json www/package.json && mkdir www/tmp/ && cd www && zip -r Archive.zip . && cd ..",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts"
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
+    "winclean": "rmdir /s /q www || (exit 0)",
+    "winzip": "cd www && 7z a -r Archive.zip * && cd ..",
+    "winbuild": "npm run winclean && tsc && copy package.json www\\package.json && mkdir www\\tmp && npm run winzip"
   },
   "repository": {
     "type": "git",
