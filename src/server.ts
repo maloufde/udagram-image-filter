@@ -28,18 +28,18 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     }
 
     // call filterImageFromURL(image_url) to filter the image
-    let image_payload = await filterImageFromURL(image_url);
-    if (!image_payload) {
-      return res.status(404).send("unable to filter image");
+    let filtered_image_filepath = await filterImageFromURL(image_url);
+    if (!filtered_image_filepath) {
+      return res.status(422).send("image not found or not processable");
     }
 
     // send the resulting file in the response
-    res.status(200).contentType("image/jpeg").sendFile(image_payload);
+    res.status(200).contentType("image/jpeg").sendFile(filtered_image_filepath);
 
     // deletes any files on the server on finish of the response
     res.on("finish", (_: any) => {
-      console.log(`on finish response event - delete image ${image_payload}`);
-      deleteLocalFiles([`${image_payload}`]);
+      console.log(`on finish response event - delete image ${filtered_image_filepath}`);
+      deleteLocalFiles([`${filtered_image_filepath}`]);
     });
   });
 
