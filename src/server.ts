@@ -15,14 +15,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
-  // QUERY PARAMATERS
+  // QUERY PARAMETERS
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
   app.get("/filteredimage", async (req: express.Request, res: express.Response) => {
 
     // validate the image_url query
-    const { image_url } = req.query;
+    const {image_url}: { image_url: string } = req.query;
     if (!image_url) {
       return res.status(400).send("missing parameter image_url");
     }
@@ -39,7 +39,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     // deletes any files on the server on finish of the response
     res.on("finish", (_: any) => {
       console.log(`on finish response event - delete image ${filtered_image_filepath}`);
-      deleteLocalFiles([`${filtered_image_filepath}`]);
+      deleteLocalFiles([filtered_image_filepath]);
     });
   });
 
